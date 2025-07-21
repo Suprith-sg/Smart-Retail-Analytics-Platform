@@ -1,0 +1,1 @@
+This is my Smart Retail Analytics Platform project.
