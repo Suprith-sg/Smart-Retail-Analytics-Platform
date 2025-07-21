@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.ipynb_checkpoints/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+target/
+
+# Node.js (if using a JS frontend framework later)
+node_modules/
+npm-debug.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+*.bak
+
+# OS generated files
+.DS_Store
+.localized
+Thumbs.db
