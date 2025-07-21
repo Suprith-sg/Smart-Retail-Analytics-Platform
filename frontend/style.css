@@ -1,0 +1,101 @@
+/* frontend/style.css */
+
+/* Basic reset and font application */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Tailwind CSS CDN is linked in HTML, so these are minimal custom styles */
+.container {
+    max-width: 960px; /* Max width for the content */
+    margin: 0 auto; /* Center the container */
+}
+
+/* Product card styling */
+.product-card {
+    background-color: #ffffff;
+    border-radius: 0.75rem; /* rounded-lg */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-lg */
+    padding: 1.5rem; /* p-6 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease-in-out;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-name {
+    font-size: 1.25rem; /* text-xl */
+    font-weight: 600; /* font-semibold */
+    color: #333; /* text-gray-800 */
+    margin-bottom: 0.5rem;
+}
+
+.product-category, .product-brand {
+    font-size: 0.875rem; /* text-sm */
+    color: #666; /* text-gray-600 */
+    margin-bottom: 0.25rem;
+}
+
+.product-price {
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: 700; /* font-bold */
+    color: #10B981; /* green-500 */
+    margin-top: 1rem;
+}
+
+/* Utility classes for responsiveness and layout (mimicking Tailwind) */
+.grid {
+    display: grid;
+}
+
+.grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.gap-6 {
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) { /* md breakpoint */
+    .md\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) { /* lg breakpoint */
+    .lg\:grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.py-10 { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+.bg-gray-100 { background-color: #f3f4f6; }
+.min-h-screen { min-height: 100vh; }
+.font-inter { font-family: 'Inter', sans-serif; }
+.text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+.font-bold { font-weight: 700; }
+.text-center { text-align: center; }
+.text-gray-800 { color: #1f2937; }
+.mb-8 { margin-bottom: 2rem; }
+.bg-white { background-color: #ffffff; }
+.p-8 { padding: 2rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+.w-full { width: 100%; }
+.max-w-4xl { max-width: 56rem; } /* 896px */
+.text-gray-600 { color: #4b5563; }
+.col-span-full { grid-column: span / span; }
+.text-red-500 { color: #ef4444; }
+.mt-4 { margin-top: 1rem; }
+.hidden { display: none; }
