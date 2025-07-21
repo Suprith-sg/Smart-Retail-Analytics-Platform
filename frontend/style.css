@@ -6,6 +6,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* Ensure Inter font is applied globally */
 }
 
 /* Tailwind CSS CDN is linked in HTML, so these are minimal custom styles */
@@ -37,7 +38,7 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.product-category, .product-brand {
+.product-category, .product-brand, .product-sku { /* Added .product-sku here */
     font-size: 0.875rem; /* text-sm */
     color: #666; /* text-gray-600 */
     margin-bottom: 0.25rem;
@@ -75,6 +76,7 @@ body {
     }
 }
 
+/* General Tailwind-like utility classes used in HTML and JS for clarity */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
 .items-center { align-items: center; }
@@ -99,3 +101,50 @@ body {
 .text-red-500 { color: #ef4444; }
 .mt-4 { margin-top: 1rem; }
 .hidden { display: none; }
+
+/* Table specific styles for sales */
+.min-w-full { min-width: 100%; }
+.border { border-width: 1px; }
+.border-gray-200 { border-color: #e5e7eb; }
+.bg-gray-200 { background-color: #e5e7eb; }
+.py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.text-left { text-align: left; }
+.text-xs { font-size: 0.75rem; line-height: 1rem; }
+.font-semibold { font-weight: 600; }
+.text-gray-700 { color: #374151; }
+.uppercase { text-transform: uppercase; }
+.tracking-wider { letter-spacing: 0.05em; }
+.rounded-tl-lg { border-top-left-radius: 0.5rem; }
+.rounded-tr-lg { border-top-right-radius: 0.5rem; }
+.border-b { border-bottom-width: 1px; }
+.hover\:bg-gray-50:hover { background-color: #f9fafb; }
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-gray-800 { color: #1f2937; }
+.font-medium { font-weight: 500; }
+.text-green-600 { color: #059669; }
+
+/* Specific tab styling to fix overlapping text */
+/* These classes are applied by JS to the buttons */
+.inline-block { display: inline-block; }
+.p-4 { padding: 1rem; }
+.border-b-2 { border-bottom-width: 2px; }
+.rounded-t-lg { border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; }
+.text-sm { font-size: 0.875rem; }
+.font-medium { font-weight: 500; }
+.text-center { text-align: center; }
+
+/* Active tab styles */
+.border-blue-500 { border-color: #3b82f6; }
+.text-blue-600 { color: #2563eb; }
+
+/* Inactive tab styles */
+.border-transparent { border-color: transparent; }
+.hover\:text-gray-600:hover { color: #4b5563; }
+.hover\:border-gray-300:hover { border-color: #d1d5db; }
+
+/* Ensure the ul for tabs doesn't have default list padding */
+#myTab {
+    list-style: none;
+    padding: 0;
+}

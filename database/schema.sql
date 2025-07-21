@@ -4,6 +4,15 @@ CREATE DATABASE IF NOT EXISTS smart_retail_db;
 -- Use the newly created database
 USE smart_retail_db;
 
+-- IMPORTANT: Drop tables in reverse order of dependency if they exist
+-- This is useful if you are re-running the script and tables already exist
+DROP TABLE IF EXISTS SaleItems;
+DROP TABLE IF EXISTS Sales;
+DROP TABLE IF EXISTS Inventory;
+DROP TABLE IF EXISTS Products;
+DROP TABLE IF EXISTS Customers;
+
+
 -- 1. Products Table
 -- Stores information about each unique product sold.
 CREATE TABLE Products (
@@ -70,6 +79,7 @@ CREATE TABLE Inventory (
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
+
 --
 -- Sample Data Insertion
 --
@@ -112,14 +122,12 @@ INSERT INTO SaleItems (transaction_id, product_id, quantity, unit_price_at_sale,
 (3, 7, 1, 3.50, 3.50),    -- Transaction 3: Milk
 (4, 3, 1, 99.99, 99.99);   -- Transaction 4: Keyboard
 
--- Insert data into Inventory table
--- Assuming product_ids 1-7 from Products table
+-- Insert data into Inventory table (MODIFIED TO TRIGGER REORDER)
 INSERT INTO Inventory (product_id, current_stock_quantity, reorder_level, location) VALUES
-(1, 50, 10, 'Warehouse A'),
-(2, 150, 30, 'Warehouse A'),
+(1, 5, 10, 'Warehouse A'),   -- Laptop: Current stock (5) < Reorder level (10) -> SHOULD RECOMMEND REORDER
+(2, 25, 30, 'Warehouse A'),  -- Wireless Mouse: Current stock (25) < Reorder level (30) -> SHOULD RECOMMEND REORDER
 (3, 75, 15, 'Warehouse B'),
 (4, 200, 50, 'Store Shelf 1'),
 (5, 120, 20, 'Store Shelf 1'),
 (6, 300, 60, 'Warehouse C'),
 (7, 100, 20, 'Warehouse C');
-

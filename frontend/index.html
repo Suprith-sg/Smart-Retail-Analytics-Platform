@@ -3,21 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Retail Products</title>
+    <title>Smart Retail Analytics</title>
     <!-- Link to your CSS file -->
     <link rel="stylesheet" href="style.css">
     <!-- Link to Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="font-inter bg-gray-100 min-h-screen flex flex-col items-center py-10">
     <div class="container bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Our Products</h1>
-        <div id="products-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Product cards will be loaded here by JavaScript -->
-            <div class="loading-message text-center text-gray-600 col-span-full">Loading products...</div>
+        <!-- Navigation Tabs -->
+        <nav class="mb-8 border-b border-gray-200">
+            <ul class="flex justify-center -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+                <li class="mr-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="products-tab" data-tabs-target="#products-section" type="button" role="tab" aria-controls="products-section" aria-selected="true">Products</button>
+                </li>
+                <li class="mr-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" id="sales-tab" data-tabs-target="#sales-section" type="button" role="tab" aria-controls="sales-section" aria-selected="false">Sales Transactions</button>
+                </li>
+                <li class="mr-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" id="analytics-tab" data-tabs-target="#analytics-section" type="button" role="tab" aria-controls="analytics-section" aria-selected="false">Analytics Dashboard</button>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Tab Content -->
+        <div id="myTabContent">
+            <!-- Products Section -->
+            <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="products-section" role="tabpanel" aria-labelledby="products-tab">
+                <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Our Products</h1>
+                <div id="products-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Product cards will be loaded here by JavaScript -->
+                    <div class="loading-message text-center text-gray-600 col-span-full">Loading products...</div>
+                </div>
+            </div>
+
+            <!-- Sales Transactions Section -->
+            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="sales-section" role="tabpanel" aria-labelledby="sales-tab">
+                <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Sales Transactions</h1>
+                <div id="sales-container" class="overflow-x-auto">
+                    <!-- Sales table will be loaded here by JavaScript -->
+                    <div class="loading-message text-center text-gray-600">Loading sales data...</div>
+                </div>
+            </div>
+
+            <!-- Analytics Dashboard Section -->
+            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="analytics-section" role="tabpanel" aria-labelledby="analytics-tab">
+                <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Analytics Dashboard</h1>
+                <div id="analytics-summary-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <!-- Summary cards will be loaded here by JavaScript -->
+                    <div class="loading-message text-center text-gray-600 col-span-full">Loading analytics summary...</div>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Top 5 Selling Products</h2>
+                <div id="top-products-container" class="overflow-x-auto mb-8">
+                    <!-- Top products list/table will be loaded here by JavaScript -->
+                    <div class="loading-message text-center text-gray-600">Loading top products...</div>
+                </div>
+                
+                <!-- Container for Sales Forecast -->
+                <div id="sales-forecast-container" class="mb-8">
+                    <!-- Sales forecast will be loaded here by JavaScript -->
+                    <div class="loading-message text-center text-gray-600">Loading sales forecast...</div>
+                </div>
+
+                <!-- New container for Inventory Recommendations -->
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Inventory Reorder Recommendations</h2>
+                <div id="inventory-recommendations-container">
+                    <!-- Inventory recommendations will be loaded here by JavaScript -->
+                    <div class="loading-message text-center text-gray-600">Loading inventory recommendations...</div>
+                </div>
+            </div>
         </div>
+
         <div id="error-message" class="text-center text-red-500 mt-4 hidden">
-            Failed to load products. Please ensure the backend server is running.
+            Failed to load data. Please ensure the backend server is running.
         </div>
     </div>
 
