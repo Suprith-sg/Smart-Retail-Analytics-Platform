@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Tailwind CSS CDN for utility classes -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="font-inter bg-gray-100 min-h-screen flex flex-col items-center py-10">
     <div class="container bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
@@ -33,6 +35,10 @@
             <!-- Products Section -->
             <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="products-section" role="tabpanel" aria-labelledby="products-tab">
                 <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Our Products</h1>
+                <!-- Product Search Input -->
+                <div class="mb-6">
+                    <input type="text" id="product-search-input" placeholder="Search products by name or SKU..." class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
                 <div id="products-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Product cards will be loaded here by JavaScript -->
                     <div class="loading-message text-center text-gray-600 col-span-full">Loading products...</div>
@@ -42,6 +48,13 @@
             <!-- Sales Transactions Section -->
             <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="sales-section" role="tabpanel" aria-labelledby="sales-tab">
                 <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Sales Transactions</h1>
+                <!-- Sales Date Range Filter -->
+                <div class="mb-6 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <input type="date" id="sales-start-date" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <span class="text-gray-600">to</span>
+                    <input type="date" id="sales-end-date" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="filter-sales-btn" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">Filter Sales</button>
+                </div>
                 <div id="sales-container" class="overflow-x-auto">
                     <!-- Sales table will be loaded here by JavaScript -->
                     <div class="loading-message text-center text-gray-600">Loading sales data...</div>
@@ -55,21 +68,30 @@
                     <!-- Summary cards will be loaded here by JavaScript -->
                     <div class="loading-message text-center text-gray-600 col-span-full">Loading analytics summary...</div>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Top 5 Selling Products</h2>
-                <div id="top-products-container" class="overflow-x-auto mb-8">
-                    <!-- Top products list/table will be loaded here by JavaScript -->
-                    <div class="loading-message text-center text-gray-600">Loading top products...</div>
-                </div>
                 
-                <!-- Container for Sales Forecast -->
-                <div id="sales-forecast-container" class="mb-8">
-                    <!-- Sales forecast will be loaded here by JavaScript -->
-                    <div class="loading-message text-center text-gray-600">Loading sales forecast...</div>
+                <!-- Sales Forecast Chart and Control -->
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8">Sales Forecast</h2>
+                <div class="mb-6 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <label for="forecast-days-input" class="text-gray-700">Forecast for next</label>
+                    <input type="number" id="forecast-days-input" value="7" min="1" class="w-24 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-center">
+                    <span class="text-gray-700">days</span>
+                    <button id="generate-forecast-btn" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">Generate Forecast</button>
+                </div>
+                <div id="sales-forecast-container" class="mb-8 p-4 bg-white rounded-lg shadow-md">
+                    <canvas id="sales-forecast-chart"></canvas> <!-- Canvas for sales forecast chart -->
+                    <div class="loading-message text-center text-gray-600 mt-4">Loading sales forecast...</div>
                 </div>
 
-                <!-- New container for Inventory Recommendations -->
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Inventory Reorder Recommendations</h2>
-                <div id="inventory-recommendations-container">
+                <!-- Top 5 Selling Products Chart -->
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8">Top 5 Selling Products</h2>
+                <div id="top-products-container" class="mb-8 p-4 bg-white rounded-lg shadow-md">
+                    <canvas id="top-products-chart"></canvas> <!-- Canvas for top products chart -->
+                    <div class="loading-message text-center text-gray-600 mt-4">Loading top products...</div>
+                </div>
+                
+                <!-- Inventory Recommendations -->
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8">Inventory Reorder Recommendations</h2>
+                <div id="inventory-recommendations-container" class="p-4 bg-white rounded-lg shadow-md">
                     <!-- Inventory recommendations will be loaded here by JavaScript -->
                     <div class="loading-message text-center text-gray-600">Loading inventory recommendations...</div>
                 </div>

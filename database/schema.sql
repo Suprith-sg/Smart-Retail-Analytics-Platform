@@ -12,7 +12,6 @@ DROP TABLE IF EXISTS Inventory;
 DROP TABLE IF EXISTS Products;
 DROP TABLE IF EXISTS Customers;
 
-
 -- 1. Products Table
 -- Stores information about each unique product sold.
 CREATE TABLE Products (
@@ -80,6 +79,7 @@ CREATE TABLE Inventory (
 );
 
 
+
 --
 -- Sample Data Insertion
 --
@@ -131,3 +131,6 @@ INSERT INTO Inventory (product_id, current_stock_quantity, reorder_level, locati
 (5, 120, 20, 'Store Shelf 1'),
 (6, 300, 60, 'Warehouse C'),
 (7, 100, 20, 'Warehouse C');
+
+
+drop table Users;

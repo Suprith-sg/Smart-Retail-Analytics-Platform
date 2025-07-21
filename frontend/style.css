@@ -13,43 +13,94 @@ body {
 .container {
     max-width: 960px; /* Max width for the content */
     margin: 0 auto; /* Center the container */
+    background-color: #ffffff; /* Explicitly set background for container */
+    border-radius: 1rem; /* More rounded corners */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); /* Deeper shadow for container */
+    padding: 2.5rem; /* Increased padding */
 }
 
 /* Product card styling */
 .product-card {
     background-color: #ffffff;
     border-radius: 0.75rem; /* rounded-lg */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-lg */
+    border: 1px solid #e0e0e0; /* Subtle border */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Slightly softer shadow */
     padding: 1.5rem; /* p-6 */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: transform 0.2s ease-in-out;
+    transition: all 0.3s ease-in-out; /* Smooth transition for all properties */
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) scale(1.02); /* Lift and slightly enlarge */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2); /* More pronounced shadow on hover */
+    border-color: #a0c4ff; /* Highlight border on hover */
 }
 
 .product-name {
-    font-size: 1.25rem; /* text-xl */
-    font-weight: 600; /* font-semibold */
-    color: #333; /* text-gray-800 */
-    margin-bottom: 0.5rem;
+    font-size: 1.35rem; /* Slightly larger text */
+    font-weight: 700; /* font-bold */
+    color: #2c3e50; /* Darker text for better contrast */
+    margin-bottom: 0.6rem;
 }
 
-.product-category, .product-brand, .product-sku { /* Added .product-sku here */
-    font-size: 0.875rem; /* text-sm */
-    color: #666; /* text-gray-600 */
-    margin-bottom: 0.25rem;
+.product-category, .product-brand, .product-sku {
+    font-size: 0.9rem; /* Slightly larger text */
+    color: #7f8c8d; /* Muted grey */
+    margin-bottom: 0.3rem;
 }
 
 .product-price {
-    font-size: 1.5rem; /* text-2xl */
-    font-weight: 700; /* font-bold */
-    color: #10B981; /* green-500 */
-    margin-top: 1rem;
+    font-size: 1.75rem; /* Larger price text */
+    font-weight: 800; /* Extra bold */
+    color: #27ae60; /* Vibrant green */
+    margin-top: 1.2rem;
+    text-align: right; /* Align price to the right */
 }
+
+/* Input field styling (for search and date pickers) */
+input[type="text"],
+input[type="date"],
+input[type="number"] {
+    padding: 0.75rem 1rem; /* More padding */
+    border: 1px solid #d1d5db; /* Default border */
+    border-radius: 0.5rem; /* Rounded corners */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06); /* Inner shadow */
+    transition: all 0.2s ease-in-out;
+    font-size: 1rem;
+    color: #333;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="number"]:focus {
+    outline: none;
+    border-color: #3b82f6; /* Blue border on focus */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); /* Blue ring on focus */
+}
+
+/* Button styling */
+button {
+    padding: 0.75rem 1.5rem; /* Consistent padding */
+    background-color: #3b82f6; /* Blue background */
+    color: white;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+    cursor: pointer;
+    border: none; /* Remove default button border */
+}
+
+button:hover {
+    background-color: #2563eb; /* Darker blue on hover */
+    transform: translateY(-1px); /* Slight lift on hover */
+}
+
+button:active {
+    transform: translateY(0); /* Press effect */
+}
+
 
 /* Utility classes for responsiveness and layout (mimicking Tailwind) */
 .grid {
@@ -74,6 +125,9 @@ body {
     .lg\:grid-cols-3 {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+    .lg\:grid-cols-4 { /* For analytics summary */
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
 }
 
 /* General Tailwind-like utility classes used in HTML and JS for clarity */
@@ -82,69 +136,131 @@ body {
 .items-center { align-items: center; }
 .justify-center { justify-content: center; }
 .py-10 { padding-top: 2.5rem; padding-bottom: 2.5rem; }
-.bg-gray-100 { background-color: #f3f4f6; }
+.bg-gray-100 { background-color: #f8f9fa; } /* Lighter background */
 .min-h-screen { min-height: 100vh; }
 .font-inter { font-family: 'Inter', sans-serif; }
 .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
 .font-bold { font-weight: 700; }
 .text-center { text-align: center; }
-.text-gray-800 { color: #1f2937; }
+.text-gray-800 { color: #2c3e50; } /* Darker text */
 .mb-8 { margin-bottom: 2rem; }
-.bg-white { background-color: #ffffff; }
 .p-8 { padding: 2rem; }
 .rounded-lg { border-radius: 0.5rem; }
 .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
 .w-full { width: 100%; }
 .max-w-4xl { max-width: 56rem; } /* 896px */
-.text-gray-600 { color: #4b5563; }
+.text-gray-600 { color: #7f8c8d; } /* Muted grey */
 .col-span-full { grid-column: span / span; }
-.text-red-500 { color: #ef4444; }
+.text-red-500 { color: #e74c3c; } /* Brighter red */
 .mt-4 { margin-top: 1rem; }
 .hidden { display: none; }
 
 /* Table specific styles for sales */
 .min-w-full { min-width: 100%; }
 .border { border-width: 1px; }
-.border-gray-200 { border-color: #e5e7eb; }
-.bg-gray-200 { background-color: #e5e7eb; }
+.border-gray-200 { border-color: #e0e0e0; }
+.bg-gray-200 { background-color: #ecf0f1; } /* Lighter grey header */
 .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
 .px-4 { padding-left: 1rem; padding-right: 1rem; }
 .text-left { text-align: left; }
 .text-xs { font-size: 0.75rem; line-height: 1rem; }
 .font-semibold { font-weight: 600; }
-.text-gray-700 { color: #374151; }
+.text-gray-700 { color: #34495e; } /* Darker text */
 .uppercase { text-transform: uppercase; }
 .tracking-wider { letter-spacing: 0.05em; }
 .rounded-tl-lg { border-top-left-radius: 0.5rem; }
 .rounded-tr-lg { border-top-right-radius: 0.5rem; }
 .border-b { border-bottom-width: 1px; }
-.hover\:bg-gray-50:hover { background-color: #f9fafb; }
+.hover\:bg-gray-50:hover { background-color: #f5f5f5; } /* Lighter hover */
 .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
-.text-gray-800 { color: #1f2937; }
+.text-gray-800 { color: #2c3e50; } /* Darker text */
 .font-medium { font-weight: 500; }
-.text-green-600 { color: #059669; }
+.text-green-600 { color: #27ae60; } /* Consistent green */
 
-/* Specific tab styling to fix overlapping text */
-/* These classes are applied by JS to the buttons */
-.inline-block { display: inline-block; }
-.p-4 { padding: 1rem; }
-.border-b-2 { border-bottom-width: 2px; }
-.rounded-t-lg { border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; }
-.text-sm { font-size: 0.875rem; }
-.font-medium { font-weight: 500; }
-.text-center { text-align: center; }
-
-/* Active tab styles */
-.border-blue-500 { border-color: #3b82f6; }
-.text-blue-600 { color: #2563eb; }
-
-/* Inactive tab styles */
-.border-transparent { border-color: transparent; }
-.hover\:text-gray-600:hover { color: #4b5563; }
-.hover\:border-gray-300:hover { border-color: #d1d5db; }
-
-/* Ensure the ul for tabs doesn't have default list padding */
+/* Specific tab styling */
 #myTab {
     list-style: none;
     padding: 0;
+    margin: 0;
+    border-bottom: 2px solid #e0e0e0; /* More prominent bottom border for nav */
+}
+
+#myTab li {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+#myTab li button {
+    padding: 1rem 1.5rem; /* More generous padding for tabs */
+    border: none; /* Remove default button border */
+    border-bottom: 3px solid transparent; /* Thicker transparent border for inactive */
+    background-color: transparent; /* Transparent background */
+    color: #7f8c8d; /* Muted text for inactive */
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+    border-radius: 0.5rem 0.5rem 0 0; /* Rounded top corners only */
+}
+
+#myTab li button:hover {
+    color: #34495e; /* Darker text on hover */
+    border-color: #bdc3c7; /* Subtle border on hover */
+    background-color: #f5f5f5; /* Light background on hover */
+}
+
+/* Active tab styles */
+#myTab li button.border-blue-500 { /* This class is applied by JS */
+    border-color: #3498db; /* Stronger blue for active tab */
+    color: #3498db; /* Active text color */
+    background-color: #ffffff; /* White background for active tab */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow for active tab */
+    z-index: 1; /* Bring active tab to front */
+    position: relative; /* Needed for z-index */
+}
+
+/* Styling for the tab content sections */
+.p-4.rounded-lg.bg-gray-50.dark\:bg-gray-800 {
+    background-color: #ffffff; /* Consistent white background for content */
+    border-radius: 0.75rem; /* More rounded */
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.03); /* Subtle inner shadow */
+    padding: 2rem; /* More padding */
+}
+
+/* Specific styling for analytics cards */
+#analytics-summary-container > div {
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out;
+}
+#analytics-summary-container > div:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for generated lists/tables within analytics */
+#top-products-container ul,
+#inventory-recommendations-container ul {
+    border: 1px solid #e0e0e0;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+#top-products-container li,
+#inventory-recommendations-container li {
+    border-bottom: 1px dashed #ecf0f1; /* Dashed separator */
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+#top-products-container li:last-child,
+#inventory-recommendations-container li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+/* Chart Canvas Styling */
+canvas {
+    max-width: 100%;
+    height: 300px; /* Fixed height for charts */
 }

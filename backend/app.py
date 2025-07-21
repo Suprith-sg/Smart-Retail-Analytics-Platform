@@ -10,10 +10,10 @@ import json
 import os
 import pickle
 import pandas as pd
-from datetime import timedelta # Import timedelta for date calculations
+from datetime import timedelta, datetime # Import datetime
 
 app = Flask(__name__)
-CORS(app)
+CORS(app) # Enable CORS for all routes (no credentials support needed without auth)
 
 # Global variables to store the loaded model and min_sale_date
 sales_forecast_model = None
@@ -24,18 +24,19 @@ def get_db_connection():
     try:
         conn = mysql.connector.connect(**DATABASE_CONFIG)
         if conn.is_connected():
-            # print("Successfully connected to MySQL database") # Commented to reduce log spam
             return conn
     except Error as e:
         print(f"Error connecting to MySQL database: {e}")
         return None
 
-# Custom JSON encoder for Decimal objects
+# Custom JSON encoder for Decimal objects and datetime/pd.Timestamp
 class CustomJsonEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Decimal):
             return float(obj)
         if isinstance(obj, pd.Timestamp):
+            return obj.isoformat()
+        if isinstance(obj, datetime): # Handle datetime objects
             return obj.isoformat()
         return json.JSONEncoder.default(self, obj)
 
@@ -63,7 +64,7 @@ def load_ml_assets():
 with app.app_context():
     load_ml_assets()
 
-# Route to get all products
+# --- API Routes (now unprotected) ---
 @app.route('/products', methods=['GET'])
 def get_products():
     conn = None
@@ -73,7 +74,16 @@ def get_products():
         conn = get_db_connection()
         if conn:
             cursor = conn.cursor(dictionary=True)
-            cursor.execute("SELECT product_id, product_name, category, brand, unit_price, sku FROM Products")
+            search_query = request.args.get('search', '').strip()
+
+            sql_query = "SELECT product_id, product_name, category, brand, unit_price, sku FROM Products"
+            params = []
+            if search_query:
+                sql_query += " WHERE product_name LIKE %s OR sku LIKE %s"
+                params.append(f"%{search_query}%")
+                params.append(f"%{search_query}%")
+            
+            cursor.execute(sql_query, params)
             raw_products = cursor.fetchall()
             
             for product in raw_products:
@@ -93,7 +103,6 @@ def get_products():
         if conn:
             conn.close()
 
-# Route: Get all sales transactions with item details
 @app.route('/sales', methods=['GET'])
 def get_sales():
     conn = None
@@ -103,7 +112,10 @@ def get_sales():
         conn = get_db_connection()
         if conn:
             cursor = conn.cursor(dictionary=True)
-            query = """
+            start_date_str = request.args.get('start_date')
+            end_date_str = request.args.get('end_date')
+
+            sql_query = """
             SELECT
                 s.transaction_id,
                 s.transaction_date,
@@ -121,9 +133,32 @@ def get_sales():
             LEFT JOIN Customers c ON s.customer_id = c.customer_id
             JOIN SaleItems si ON s.transaction_id = si.transaction_id
             JOIN Products p ON si.product_id = p.product_id
-            ORDER BY s.transaction_date DESC, s.transaction_id, p.product_name;
             """
-            cursor.execute(query)
+            params = []
+            where_clauses = []
+
+            if start_date_str:
+                try:
+                    start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+                    where_clauses.append("DATE(s.transaction_date) >= %s")
+                    params.append(start_date)
+                except ValueError:
+                    return jsonify({"error": "Invalid start_date format. Use YYYY-MM-DD."}), 400
+
+            if end_date_str:
+                try:
+                    end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+                    where_clauses.append("DATE(s.transaction_date) <= %s")
+                    params.append(end_date)
+                except ValueError:
+                    return jsonify({"error": "Invalid end_date format. Use YYYY-MM-DD."}), 400
+
+            if where_clauses:
+                sql_query += " WHERE " + " AND ".join(where_clauses)
+            
+            sql_query += " ORDER BY s.transaction_date DESC, s.transaction_id, p.product_name;"
+
+            cursor.execute(sql_query, params)
             raw_sales_data = cursor.fetchall()
 
             grouped_sales = {}
@@ -158,7 +193,6 @@ def get_sales():
         if conn:
             conn.close()
 
-# Route: Get summary analytics
 @app.route('/analytics/summary', methods=['GET'])
 def get_summary_analytics():
     conn = None
@@ -206,7 +240,6 @@ def get_summary_analytics():
         if conn:
             conn.close()
 
-# Route: Get sales forecast
 @app.route('/analytics/forecast', methods=['GET'])
 def get_sales_forecast():
     global sales_forecast_model, min_sale_date
@@ -267,7 +300,6 @@ def get_sales_forecast():
         print(f"Error generating sales forecast: {e}")
         return jsonify({"error": "Failed to generate sales forecast"}), 500
 
-# New Route: Get inventory recommendations
 @app.route('/analytics/inventory_recommendations', methods=['GET'])
 def get_inventory_recommendations():
     conn = None
@@ -278,7 +310,6 @@ def get_inventory_recommendations():
         if conn:
             cursor = conn.cursor(dictionary=True)
 
-            # Fetch current inventory and product details
             cursor.execute("""
                 SELECT
                     p.product_id,
@@ -290,30 +321,18 @@ def get_inventory_recommendations():
                 JOIN Products p ON i.product_id = p.product_id
             """)
             inventory_data = cursor.fetchall()
-
-            # Logic for reorder recommendations (simple example)
-            # You would typically use the sales forecast here, but for simplicity,
-            # we'll use a basic rule: if current stock is below reorder level, recommend reorder.
-            # For a more advanced approach, you'd integrate the sales_forecast_model here.
-
-            # Example: Fetch sales forecast for a short period (e.g., next 7 days)
-            # This would be a more complex integration, possibly calling get_sales_forecast internally
-            # For now, let's keep it simple based on reorder_level.
-            # In a real scenario, you'd calculate forecasted demand per product.
+            print(f"Fetched inventory data: {inventory_data}")
 
             for item in inventory_data:
                 product_id = item['product_id']
                 product_name = item['product_name']
                 current_stock = item['current_stock_quantity']
                 reorder_level = item['reorder_level']
-                unit_price = float(item['unit_price']) # Ensure float conversion
+                unit_price = float(item['unit_price'])
 
-                # Simple reorder logic: if current stock is below reorder level
                 if reorder_level is not None and current_stock < reorder_level:
-                    # Recommend ordering enough to reach reorder_level + a buffer (e.g., 20 units)
-                    # Or based on forecasted demand
-                    recommended_quantity = reorder_level + 20 - current_stock # Example buffer
-                    if recommended_quantity < 0: recommended_quantity = 0 # Ensure non-negative
+                    recommended_quantity = reorder_level + 20 - current_stock
+                    if recommended_quantity < 0: recommended_quantity = 0
                     
                     recommendations.append({
                         'product_id': product_id,
@@ -324,6 +343,7 @@ def get_inventory_recommendations():
                         'estimated_cost': float(recommended_quantity * unit_price)
                     })
             
+            print(f"Generated recommendations: {recommendations}")
             return jsonify(recommendations)
     except Error as e:
         print(f"Error fetching inventory recommendations: {e}")
